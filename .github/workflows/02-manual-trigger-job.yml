@@ -3,24 +3,25 @@ name: Manually trigger an Azure Machine Learning job
 on:
   workflow_dispatch:
   pull_request:
-      branches:
+    branches:
       - main
 
 jobs:
   train:
     runs-on: ubuntu-latest
     steps:
-    - name: Check out repo
-      uses: actions/checkout@main
-    - name: Install az ml extension
-      run: az extension add -n ml -y
-    - name: Azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: Azure CLI Action
-      uses: Azure/cli@v1
-      with:
-        inlineScript: |
-          az extension add -n ml -y
-          az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-run-${{ github.run_id }}" -w mikouml
+      - name: Check out repo
+        uses: actions/checkout@main
+      - name: Install az ml extension
+        run: az extension add -n ml -y
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+      - name: Azure CLI Action
+        uses: Azure/cli@v1
+        with:
+          inlineScript: |
+            az extension add -n ml -y
+            az ml compute create -g mikouml -w mikouml -n ci-instance
+            az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-run-${{ github.run_id }}" -w mikouml

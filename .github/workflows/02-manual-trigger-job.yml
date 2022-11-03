@@ -23,5 +23,5 @@ jobs:
         with:
           inlineScript: |
             az extension add -n ml -y
-            az ml compute create -g mikouml -w mikouml -n ci-instance
+            az ml compute create -g mikouml -w mikouml -n ci-instance --type ComputeInstance
             az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-run-${{ github.run_id }}" -w mikouml

@@ -2,6 +2,9 @@ name: Manually trigger an Azure Machine Learning job
 
 on:
   workflow_dispatch:
+  pull_request:
+      branches:
+      - main
 
 jobs:
   train:
@@ -19,4 +22,4 @@ jobs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az ml job create --file .\src\job_pipeline.yml -g mikouml -n simulation-for-run-${{ github.run_id }} --web
+          az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-run-${{ github.run_id }}"

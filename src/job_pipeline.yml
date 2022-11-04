@@ -11,6 +11,9 @@ inputs:
   reg_rate: 0.01
   run_id: placeholder
 
+outputs:
+  trained_model:
+  artifact:
 jobs:
   train_for_diabetes:
     code: model
@@ -22,7 +25,9 @@ jobs:
       training_data: ${{parent.inputs.training_data}}
       reg_rate: ${{parent.inputs.reg_rate}}
       run_id: ${{ parent.inputs.run_id }}
-
+    outputs:
+      artifact: ${{parent.outputs.artifact}}
+      trained_model: ${{parent.outputs.trained_model}}
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     compute: ci-instance
     description: an experiment

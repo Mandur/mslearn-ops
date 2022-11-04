@@ -63,8 +63,6 @@ def train_model(reg_rate, run_id, X_train, X_test, y_train, y_test):
     )
     model_name = "simulation-for-production-run-" + run_id
 
-    mlflow_run_id = MlflowClient().get_run(run_id)
-
     print("Registering the model via MLFlow")
     print(model_name)
     mlflow.sklearn.log_model(

@@ -20,7 +20,9 @@ def main(args):
     X_train, X_test, y_train, y_test = split_data(df)
 
     # train model
-    train_model(args.reg_rate, args.run_id, X_train, X_test, y_train, y_test)
+    train_model(
+        args.reg_rate, "", args.run_id, X_train, X_test, y_train, y_test
+    )
 
 
 def get_csvs_df(path):
@@ -55,13 +57,15 @@ def split_data(df):
     return X_train, X_test, y_train, y_test
 
 
-def train_model(reg_rate, environment, X_train, X_test, y_train, y_test):
+def train_model(
+    reg_rate, environment, run_id, X_train, X_test, y_train, y_test
+):
     # train model
-    # with mlflow.start_run() as run:
-    trained_model = LogisticRegression(C=1 / reg_rate, solver="liblinear").fit(
-        X_train, y_train
-    )
-    model_name = "diabetes-simulation-for" + environment
+    with mlflow.start_run() as run:
+        LogisticRegression(C=1 / reg_rate, solver="liblinear").fit(
+            X_train, y_train
+        )
+    model_name = "diabetes-production-model-" + run_id
     print("Registering the model via MLFlow")
     print(model_name)
     # mlflow.sklearn.log_model(
@@ -70,9 +74,9 @@ def train_model(reg_rate, environment, X_train, X_test, y_train, y_test):
     #     artifact_path=model_name,
     # )
 
-    # model_path = "model"
-    # model_uri = "runs:/{}/{}".format(run.info.run_id, model_path)
-    # mlflow.register_model(model_uri, model_name)
+    model_path = "model"
+    model_uri = "runs:/{}/{}".format(run.info.run_id, model_path)
+    mlflow.register_model(model_uri, model_name)
 
 
 def parse_args():

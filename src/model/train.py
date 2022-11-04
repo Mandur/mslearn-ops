@@ -73,9 +73,9 @@ def train_model(reg_rate, run_id, X_train, X_test, y_train, y_test):
         artifact_path=model_name,
     )
 
-    model_path = "model"
-    model_uri = "runs:/{}/{}".format(mlflow_run_id, model_path)
-    mlflow.register_model(model_uri, model_name)
+    # model_path = "model"
+    # model_uri = "runs:/{}/{}".format(mlflow_run_id, model_path)
+    # mlflow.register_model(model_uri, model_name)
 
 
 def parse_args():

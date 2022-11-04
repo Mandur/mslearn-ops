@@ -65,7 +65,7 @@ def train_model(
         LogisticRegression(C=1 / reg_rate, solver="liblinear").fit(
             X_train, y_train
         )
-    model_name = "diabetes-production-model-" + run_id
+    model_name = "diabetes-production-model"
     print("Registering the model via MLFlow")
     print(model_name)
     # mlflow.sklearn.log_model(

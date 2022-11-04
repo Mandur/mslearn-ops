@@ -64,5 +64,4 @@ jobs:
             JOB_NAME=$(az ml job list --query "[0].name" -g mikouml -w mikouml | tr -d '"')
             echo $JOB_NAME
 
-            az ml model create --name "diabetes-mlflow-model" --type "mlflow_model" --path "azureml://runs/${{ github.run_id }}/model" -g mikouml -w mikouml
-            az ml online-deployment create --name diabetes-deployment --endpoint $ENDPOINT_NAME -f endpoints/deployment.yaml --all-traffic -g mikouml -w mikouml
+            az ml online-deployment create --name diabetes-deployment --endpoint $ENDPOINT_NAME -f endpoints/deploy.yaml --all-traffic -g mikouml -w mikouml

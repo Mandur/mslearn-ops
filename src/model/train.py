@@ -86,6 +86,7 @@ def parse_args():
     parser.add_argument(
         "--reg_rate", dest="reg_rate", type=float, default=0.01
     )
+    parser.add_argument("--run_id", dest="run_id", type=str)
 
     # parse args
     args = parser.parse_args()

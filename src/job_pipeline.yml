@@ -9,12 +9,13 @@ inputs:
     type: uri_folder
     path: azureml:diabetes-dev-data:1
   reg_rate: 0.01
+  run_id: placeholder
 
 jobs:
   train_for_diabetes:
     code: model
     command: >-
-      python train.py --training_data ${{inputs.training_data}}
+      python train.py --training_data ${{inputs.training_data}} --run_id ${{ inputs.run_id }}
 
 
     inputs:

@@ -21,7 +21,7 @@ def main(args):
     X_train, X_test, y_train, y_test = split_data(df)
 
     # train model
-    train_model(args.reg_rate, X_train, X_test, y_train, y_test)
+    train_model(args.reg_rate, args.run_id, X_train, X_test, y_train, y_test)
 
 
 def get_csvs_df(path):
@@ -56,10 +56,24 @@ def split_data(df):
     return X_train, X_test, y_train, y_test
 
 
-def train_model(reg_rate, X_train, X_test, y_train, y_test):
+def train_model(reg_rate, run_id, X_train, X_test, y_train, y_test):
     # train model
-    LogisticRegression(C=1 / reg_rate, solver="liblinear").fit(
+    trained_model = LogisticRegression(C=1 / reg_rate, solver="liblinear").fit(
         X_train, y_train
+    )
+    model_name = "simulation-for-production-run-" + run_id
+    print("Registering the model via MLFlow")
+    print(model_name)
+    mlflow.sklearn.log_model(
+        sk_model=trained_model,
+        registered_model_name=model_name,
+        artifact_path=model_name,
+    )
+
+    # Saving the model to a file
+    mlflow.sklearn.save_model(
+        sk_model=trained_model,
+        path=os.path.join(args.model, "trained_model"),
     )
 
 

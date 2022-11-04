@@ -62,6 +62,8 @@ def train_model(reg_rate, run_id, X_train, X_test, y_train, y_test):
         X_train, y_train
     )
     model_name = "simulation-for-production-run-" + run_id
+    mlflow_run_id = mlflow_run.info.run_id
+
     print("Registering the model via MLFlow")
     print(model_name)
     mlflow.sklearn.log_model(
@@ -70,11 +72,9 @@ def train_model(reg_rate, run_id, X_train, X_test, y_train, y_test):
         artifact_path=model_name,
     )
 
-    # Saving the model to a file
-    mlflow.sklearn.save_model(
-        sk_model=trained_model,
-        path=os.path.join(args.model, "trained_model"),
-    )
+    model_path = "model"
+    model_uri = "runs:/{}/{}".format(mlflow_run_id, model_path)
+    mlflow.register_model(model_uri, model_name)
 
 
 def parse_args():

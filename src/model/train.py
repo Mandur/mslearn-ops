@@ -65,11 +65,11 @@ def train_model(reg_rate, run_id, X_train, X_test, y_train, y_test):
 
     print("Registering the model via MLFlow")
     print(model_name)
-    mlflow.sklearn.log_model(
-        sk_model=trained_model,
-        registered_model_name=model_name,
-        artifact_path=model_name,
-    )
+    # mlflow.sklearn.log_model(
+    #     sk_model=trained_model,
+    #     registered_model_name=model_name,
+    #     artifact_path=model_name,
+    # )
 
     # model_path = "model"
     # model_uri = "runs:/{}/{}".format(mlflow_run_id, model_path)

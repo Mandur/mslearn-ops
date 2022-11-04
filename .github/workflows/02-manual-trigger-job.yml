@@ -25,7 +25,7 @@ jobs:
           inlineScript: |
             az extension add -n ml -y
             az ml compute create -g mikouml -w mikouml -n ci-instance --type ComputeInstance
-            az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-run-${{ github.run_id }}" -w mikouml --set inputs.training_data.path=file --set inputs.training_data.path='azureml:diabetes-dev-data:1' --stream --set display_name='diabetes-development' --set inputs.run_id='${{ github.run_id }}' --set jobs.train_for_diabetes.compute=edgeTarget --set.name="diabetes-development-model-${{ github.run_id }}"
+            az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-run-${{ github.run_id }}" -w mikouml --set inputs.training_data.path=file --set inputs.training_data.path='azureml:diabetes-dev-data:1' --stream --set display_name='diabetes-development' --set inputs.run_id='${{ github.run_id }}' --set jobs.train_for_diabetes.compute=edgeTarget --set name="diabetes-development-model-${{ github.run_id }}"
 
   train_production:
     needs: train_development
@@ -46,7 +46,7 @@ jobs:
           inlineScript: |
             az extension add -n ml -y
             az ml compute create -g mikouml -w mikouml -n ci-instance --type ComputeInstance
-            az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-production-run-${{ github.run_id }}" -w mikouml --set inputs.training_data.path=folder --set inputs.training_data.path="azureml:diabetes-production-data:1" --set display_name='diabetes-production' --set inputs.run_id=${{ github.run_id }} --stream --set.name="diabetes-production-model-${{ github.run_id }}"
+            az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-production-run-${{ github.run_id }}" -w mikouml --set inputs.training_data.path=folder --set inputs.training_data.path="azureml:diabetes-production-data:1" --set display_name='diabetes-production' --set inputs.run_id=${{ github.run_id }} --stream --set name="diabetes-production-model-${{ github.run_id }}"
   deploy_production:
     needs: train_production
     runs-on: ubuntu-latest

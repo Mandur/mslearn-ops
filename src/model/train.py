@@ -58,22 +58,23 @@ def split_data(df):
 
 def train_model(reg_rate, environment, X_train, X_test, y_train, y_test):
     # train model
-    trained_model = LogisticRegression(C=1 / reg_rate, solver="liblinear").fit(
-        X_train, y_train
-    )
-    model_name = "diabetes-simulation-for" + environment
+    with mlflow.start_run() as run:
+        trained_model = LogisticRegression(
+            C=1 / reg_rate, solver="liblinear"
+        ).fit(X_train, y_train)
+        model_name = "diabetes-simulation-for" + environment
 
-    print("Registering the model via MLFlow")
-    print(model_name)
-    mlflow.sklearn.log_model(
-        sk_model=trained_model,
-        registered_model_name=model_name,
-        artifact_path=model_name,
-    )
+        print("Registering the model via MLFlow")
+        print(model_name)
+        mlflow.sklearn.log_model(
+            sk_model=trained_model,
+            registered_model_name=model_name,
+            artifact_path=model_name,
+        )
 
-    # model_path = "model"
-    # model_uri = "runs:/{}/{}".format(mlflow_run_id, model_path)
-    # mlflow.register_model(model_uri, model_name)
+        model_path = "model"
+        model_uri = "runs:/{}/{}".format(run.info.run_id, model_path)
+        mlflow.register_model(model_uri, model_name)
 
 
 def parse_args():

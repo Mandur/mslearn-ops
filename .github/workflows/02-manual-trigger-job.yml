@@ -52,6 +52,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+      - name: Check out repo
+        uses: actions/checkout@main
       - name: Azure login
         uses: azure/login@v1
         with:

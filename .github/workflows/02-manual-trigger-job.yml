@@ -25,7 +25,7 @@ jobs:
           inlineScript: |
             az extension add -n ml -y
             az ml compute create -g mikouml -w mikouml -n ci-instance --type ComputeInstance
-            az ml job create  --file src/job_pipeline.yml -g mikouml -n "simulation-for-run-${{ github.run_id }}" -w mikouml --set inputs.training_data.path=file --set inputs.training_data.path='azureml:diabetes-dev-data:1' --stream --set display_name='diabetes-development' --set inputs.run_id='${{ github.run_id }}' --set jobs.train_for_diabetes.compute=edgeTarget
+            az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-run-${{ github.run_id }}" -w mikouml --set inputs.training_data.path=file --set inputs.training_data.path='azureml:diabetes-dev-data:1' --stream --set display_name='diabetes-development' --set inputs.run_id='${{ github.run_id }}' --set jobs.train_for_diabetes.compute=edgeTarget
 
   train_production:
     needs: train_development

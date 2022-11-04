@@ -12,7 +12,7 @@ inputs:
   run_id: placeholder
 
 jobs:
-  train_for_diabetes:
+  diabetes-production-model-${{ inputs.run_id }}:
     name: diabetes-production-model-${{ inputs.run_id }}
     code: model
     command: >-

@@ -56,20 +56,20 @@ def split_data(df):
     return X_train, X_test, y_train, y_test
 
 
-def train_model(reg_rate, run_id, X_train, X_test, y_train, y_test):
+def train_model(reg_rate, environment, X_train, X_test, y_train, y_test):
     # train model
     trained_model = LogisticRegression(C=1 / reg_rate, solver="liblinear").fit(
         X_train, y_train
     )
-    model_name = "simulation-for-production-run-" + run_id
+    model_name = "diabetes-simulation-for" + environment
 
     print("Registering the model via MLFlow")
     print(model_name)
-    # mlflow.sklearn.log_model(
-    #     sk_model=trained_model,
-    #     registered_model_name=model_name,
-    #     artifact_path=model_name,
-    # )
+    mlflow.sklearn.log_model(
+        sk_model=trained_model,
+        registered_model_name=model_name,
+        artifact_path=model_name,
+    )
 
     # model_path = "model"
     # model_uri = "runs:/{}/{}".format(mlflow_run_id, model_path)
@@ -86,6 +86,7 @@ def parse_args():
         "--reg_rate", dest="reg_rate", type=float, default=0.01
     )
     parser.add_argument("--run_id", dest="run_id", type=str)
+    parser.add_argument("--environment", dest="environment", type=str)
 
     # parse args
     args = parser.parse_args()

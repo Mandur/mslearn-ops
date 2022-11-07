@@ -1,25 +1,27 @@
-
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: diabetes-pipeline
 settings:
   default_compute: azureml:cpu-cluster
-  
+
 inputs:
-  training_data: 
-    type: uri_folder 
-    path: azureml:diabetes-prod-data:2
+  training_data:
+    type: uri_folder
+    path: azureml:diabetes-dev-data:1
   reg_rate: 0.01
+  run_id: placeholder
 
 jobs:
   train_for_diabetes:
     code: model
     command: >-
-      python train.py --training_data ${{inputs.training_data}}
+      python train.py --training_data ${{inputs.training_data}} --run_id ${{ inputs.run_id }}
+
+
     inputs:
       training_data: ${{parent.inputs.training_data}}
       reg_rate: ${{parent.inputs.reg_rate}}
-    
+      run_id: ${{ parent.inputs.run_id }}
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    compute: chmikhai1
+    compute: ci-instance
     description: an experiment

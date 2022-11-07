@@ -7,25 +7,25 @@ on:
       - main
 
 jobs:
-  # train_development:
-  #   runs-on: ubuntu-latest
-  #   environment: development
-  #   steps:
-  #     - name: Check out repo
-  #       uses: actions/checkout@main
-  #     - name: Install az ml extension
-  #       run: az extension add -n ml -y
-  #     - name: Azure login
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{secrets.AZURE_CREDENTIALS}}
-  #     - name: Azure CLI Action
-  #       uses: Azure/cli@v1
-  #       with:
-  #         inlineScript: |
-  #           az extension add -n ml -y
-  #           az ml compute create -g mikouml -w mikouml -n ci-instance --type ComputeInstance
-  #           az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-run-${{ github.run_id }}" -w mikouml --set inputs.training_data.path=file --set inputs.training_data.path='azureml:diabetes-dev-data:1' --stream --set display_name='diabetes-development' --set inputs.run_id='${{ github.run_id }}' --set jobs.train_for_diabetes.compute=edgeTarget --set jobs.train_for_diabetes.name="diabetes-development-model-${{ github.run_id }}"
+  train_development:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@main
+      - name: Install az ml extension
+        run: az extension add -n ml -y
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+      - name: Azure CLI Action
+        uses: Azure/cli@v1
+        with:
+          inlineScript: |
+            az extension add -n ml -y
+            az ml compute create -g mikouml -w mikouml -n ci-instance --type ComputeInstance
+            az ml job create --file src/job_pipeline.yml -g mikouml -n "simulation-for-run-${{ github.run_id }}" -w mikouml --set inputs.training_data.path=file --set inputs.training_data.path='azureml:diabetes-production-data:1' --stream --set display_name='diabetes-production-on-edge' --set inputs.run_id='${{ github.run_id }}' --set jobs.train_for_diabetes.compute=edgeTarget --set jobs.train_for_diabetes.name="diabetes-prod-on-edge-model-${{ github.run_id }}"
 
   train_production:
     # needs: train_development

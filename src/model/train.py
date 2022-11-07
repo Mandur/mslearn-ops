@@ -3,6 +3,7 @@
 import argparse
 import glob
 import os
+import time
 import mlflow
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -23,6 +24,8 @@ def main(args):
     train_model(
         args.reg_rate, "", args.run_id, X_train, X_test, y_train, y_test
     )
+
+    time.sleep(600)
 
 
 def get_csvs_df(path):

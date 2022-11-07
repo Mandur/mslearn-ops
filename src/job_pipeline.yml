@@ -11,9 +11,6 @@ inputs:
   reg_rate: 0.01
   run_id: placeholder
 
-outputs:
-  trained_model:
-  artifact:
 jobs:
   train_for_diabetes:
     code: model
